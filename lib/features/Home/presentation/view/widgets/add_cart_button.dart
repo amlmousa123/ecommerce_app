@@ -1,27 +1,40 @@
+import 'package:ecommerce_app/features/Cart/data/models/cart_Item_model.dart';
+import 'package:ecommerce_app/features/Cart/presentation/view_models/cubit/cart_cubit.dart';
 import 'package:ecommerce_app/features/Home/data/models/product_model.dart';
-import 'package:ecommerce_app/features/Home/presentation/view_models/home_cubit/home_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddCartButton extends StatelessWidget {
-  const AddCartButton({super.key, required this.product, required this.ctx});
+  const AddCartButton({super.key, required this.product});
   final Product product;
-  final BuildContext ctx;
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        HomeCubit.get(ctx).addItemToCart(product);
+    return BlocListener<CartCubit, CartState>(
+      listener: (context, state) {
+        if (state is CartItemAdded) {
+          Navigator.of(context).pop();
+        }
       },
-      style: ElevatedButton.styleFrom(
-          backgroundColor: Theme.of(context).primaryColor,
-          minimumSize:
-              Size(double.infinity, MediaQuery.sizeOf(context).height * .073),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
-      child: Text(
-        'Add to cart',
-        style: Theme.of(context).textTheme.displayLarge,
+      child: ElevatedButton(
+        onPressed: () {
+          var cubit = CartCubit.get(context);
+          cubit.addItemToCart(CartItem(
+              countity: cubit.countityCounter,
+              product: product,
+              totalPriceForProduct: cubit.countityCounter * product.price));
+          cubit.resetCounter();
+        },
+        style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).primaryColor,
+            minimumSize:
+                Size(double.infinity, MediaQuery.sizeOf(context).height * .073),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10))),
+        child: Text(
+          'Add to cart',
+          style: Theme.of(context).textTheme.displayLarge,
+        ),
       ),
     );
   }

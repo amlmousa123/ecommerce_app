@@ -10,11 +10,3 @@ class ProductsLoaded extends HomeState {
 
   ProductsLoaded(this.products);
 }
-
-class CartItemAdded extends HomeState {}
-
-class CartItemsLoaded extends HomeState {
-  final List<Product> cartItems;
-
-  CartItemsLoaded(this.cartItems);
-}

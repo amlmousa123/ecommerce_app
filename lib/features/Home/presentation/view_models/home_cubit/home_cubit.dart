@@ -10,24 +10,11 @@ class HomeCubit extends Cubit<HomeState> {
 
   static HomeCubit get(context) => BlocProvider.of<HomeCubit>(context);
   List<Product> products = [];
-  List<Product> productsOfCart = [];
 
   List<Product> getProducts() {
     List<Product> items = ProductRepo.products;
     emit(ProductsLoaded(items));
     products = items;
     return products;
-  }
-
-  void addItemToCart(Product item) {
-    productsOfCart.add(item);
-    print(productsOfCart);
-
-    emit(CartItemAdded());
-  }
-
-  List<Product> getCartItems() {
-    emit(CartItemsLoaded(productsOfCart));
-    return productsOfCart;
   }
 }

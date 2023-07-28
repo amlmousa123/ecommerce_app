@@ -1,6 +1,6 @@
+import 'package:ecommerce_app/features/Cart/data/models/cart_Item_model.dart';
 import 'package:ecommerce_app/features/Cart/presentation/view/widgets/cart_products_list_view_item.dart';
-import 'package:ecommerce_app/features/Home/data/models/product_model.dart';
-import 'package:ecommerce_app/features/Home/presentation/view_models/home_cubit/home_cubit.dart';
+import 'package:ecommerce_app/features/Cart/presentation/view_models/cubit/cart_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,15 +9,14 @@ class CartProductsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeState>(
+    return BlocBuilder<CartCubit, CartState>(
       builder: (context, state) {
-        var cubit = HomeCubit.get(context)..getCartItems();
-        List<Product> cartItems = cubit.productsOfCart;
-        print(cartItems);
+        var cubit = CartCubit.get(context);
+        List<CartItem> cartItems = cubit.getCartItems();
         return ListView.separated(
           itemBuilder: (context, index) {
             return CartItemsListViewItem(
-              product: cartItems[index],
+              item: cartItems[index],
             );
           },
           separatorBuilder: (context, index) {

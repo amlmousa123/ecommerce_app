@@ -1,11 +1,13 @@
 import 'package:ecommerce_app/core/widgets/product_countity.dart';
-import 'package:ecommerce_app/features/Home/data/models/product_model.dart';
+import 'package:ecommerce_app/features/Cart/data/models/cart_Item_model.dart';
+import 'package:ecommerce_app/features/Cart/presentation/view_models/cubit/cart_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CartItemsListViewItem extends StatelessWidget {
-  const CartItemsListViewItem({super.key, required this.product});
-  final Product product;
+  const CartItemsListViewItem({super.key, required this.item});
+  final CartItem item;
 
   @override
   Widget build(BuildContext context) {
@@ -18,18 +20,18 @@ class CartItemsListViewItem extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Image.asset(product.imageUrl!),
+            Image.asset(item.product.imageUrl!),
             SizedBox(
               width: size.width * .056,
             ),
             Column(
               children: [
                 Text(
-                  product.name!,
+                  item.product.name!,
                   style: theme.textTheme.bodySmall,
                 ),
                 Text(
-                  '\$${product.price} \/ kg',
+                  '\$${item.product.price} \/ kg',
                   style: theme.textTheme.displaySmall!
                       .copyWith(color: theme.disabledColor),
                 ),
@@ -37,11 +39,11 @@ class CartItemsListViewItem extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      '2x  ',
+                      '${item.countity}x  ',
                       style: theme.textTheme.displayMedium,
                     ),
                     Text(
-                      '\$6.00  ',
+                      '\$${item.totalPriceForProduct}  ',
                       style: theme.textTheme.displayMedium,
                     ),
                   ],
@@ -53,15 +55,24 @@ class CartItemsListViewItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                InkWell(
-                  onTap: () {},
-                  child: Icon(
-                    Icons.cancel_outlined,
-                    size: 20.sp,
-                    color: theme.disabledColor,
-                  ),
+                BlocBuilder<CartCubit, CartState>(
+                  builder: (context, state) {
+                    return InkWell(
+                      onTap: () {
+                        CartCubit.get(context).removeItemToCart(item);
+                      },
+                      child: Icon(
+                        Icons.cancel_outlined,
+                        size: 20.sp,
+                        color: theme.disabledColor,
+                      ),
+                    );
+                  },
                 ),
-                ProductCountityCounter(width: size.width * .17, size: 12.sp)
+                ProductCountityCounter(
+                  width: size.width * .17,
+                  size: 12.sp,
+                )
               ],
             )
           ],

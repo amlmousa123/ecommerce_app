@@ -26,7 +26,6 @@ class ItemsListView extends StatelessWidget {
             itemBuilder: (context, index) {
               return ItemsListViewItem(
                 product: items[index],
-                ctx: context,
               );
             },
           ),

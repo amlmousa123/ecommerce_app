@@ -1,6 +1,5 @@
 import 'package:ecommerce_app/features/Cart/presentation/view/pages/cart_view.dart';
 import 'package:ecommerce_app/features/Home/presentation/view/widgets/items_list_view.dart';
-import 'package:ecommerce_app/features/Home/presentation/view_models/home_cubit/home_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,10 +15,7 @@ class HomeLayoutCubit extends Cubit<LandingPageState> {
   int bottomNavCurrentIndex = 0;
 
   List<Widget> navigationBarPages = [
-    BlocProvider(
-      create: (context) => HomeCubit(),
-      child: const ItemsListView(),
-    ),
+    const ItemsListView(),
     const CartView(),
   ];
 
